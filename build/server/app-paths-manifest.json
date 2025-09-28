@@ -1,0 +1,13 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/about/geography/page": "app/about/geography/page.js",
+  "/about/history/page": "app/about/history/page.js",
+  "/contacts/reception/page": "app/contacts/reception/page.js",
+  "/emergency/defense/page": "app/emergency/defense/page.js",
+  "/emergency/medical/page": "app/emergency/medical/page.js",
+  "/emergency/police/page": "app/emergency/police/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/government/administration/page": "app/government/administration/page.js",
+  "/government/council/page": "app/government/council/page.js",
+  "/page": "app/page.js"
+}
