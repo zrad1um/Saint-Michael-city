@@ -1,0 +1,13 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/about/geography/page": "/about/geography",
+  "/about/history/page": "/about/history",
+  "/contacts/reception/page": "/contacts/reception",
+  "/emergency/defense/page": "/emergency/defense",
+  "/emergency/medical/page": "/emergency/medical",
+  "/emergency/police/page": "/emergency/police",
+  "/favicon.ico/route": "/favicon.ico",
+  "/government/administration/page": "/government/administration",
+  "/government/council/page": "/government/council",
+  "/page": "/"
+}
