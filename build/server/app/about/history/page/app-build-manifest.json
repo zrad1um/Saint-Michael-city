@@ -1,0 +1,15 @@
+{
+  "pages": {
+    "/about/history/page": [
+      "static/chunks/ff1a16fafef87110.js",
+      "static/chunks/7dd66bdf8a7e5707.js",
+      "static/chunks/c27b785a62c78fdd.css",
+      "static/chunks/9ad281b2e332ca7e.js",
+      "static/chunks/c62b4372c26b460f.js",
+      "static/chunks/5564f493499345f1.js",
+      "static/chunks/7880f8283a6f3daf.js",
+      "static/chunks/8082ab48faca5ea1.js",
+      "static/chunks/turbopack-b6a23b3e2832b47b.js"
+    ]
+  }
+}
