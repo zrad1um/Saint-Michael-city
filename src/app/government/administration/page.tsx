@@ -1,0 +1,362 @@
+"use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+
+export default function Navbar() {
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isWap, setIsWap] = useState(false);
+  const [isTv, setIsTv] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      setIsMobile(width < 640);
+      setIsWap(width < 240);
+      setIsTv(width >= 1921);
+      
+      // on big screens menu always opened
+      if (width >= 640) {
+        setMobileOpen(true);
+      } else {
+        setMobileOpen(false);
+      }
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => {
+      window.removeEventListener('resize', checkScreenSize);
+    };
+  }, []);
+
+  const toggleMenu = (menu: string) => {
+    setOpenMenu(openMenu === menu ? null : menu);
+  };
+
+  return (
+    <div className={`flex flex-col sm:flex-row min-h-screen bg-[#c0c0c0] ${isWap ? 'text-[8px]' : ''} ${isTv ? 'max-w-[1600px] mx-auto' : ''}`}>
+      {/*burger for mobile*/}
+      {isMobile && (
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="sm:hidden fixed top-2 left-2 z-50 text-white bg-orange-500 p-2 border-2 border-t-white border-l-white border-b-gray-800 border-r-gray-800"
+          style={{ 
+            boxShadow: 'inset -1px -1px #0f0f0f, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff'
+          }}
+        >
+          {mobileOpen ? "☭" : "卐"}
+        </button>
+      )}
+
+      {/*navpan*/}
+      <nav 
+        className={`bg-gray-300 text-black border-r-2 border-r-gray-800 border-b-2 border-b-gray-800 sm:w-64 sm:min-w-[16rem] w-full sm:sticky fixed top-0 z-40 transition-transform duration-300 h-screen overflow-y-auto ${
+          isMobile && !mobileOpen ? '-translate-x-full' : 'translate-x-0'
+        } ${isTv ? 'w-80 min-w-[20rem]' : ''}`}
+      >
+        {/*head*/}
+        <div className="bg-gradient-to-b from-black to-orange-500 text-white p-2 border-b-2 border-b-gray-800 sticky top-0 z-10">
+          <div className="flex items-center justify-between">
+            <div className="text-center flex-grow">
+              {!isWap && (
+                <div className="text-xs font-bold uppercase tracking-wider mb-1 font-mono italic whitespace-nowrap overflow-hidden text-ellipsis">
+                  UNITED MUNICIPALITY<br />OF ENKELINLINNA
+                </div>
+              )}
+              <h1 className="text-sm sm:text-base font-bold leading-tight uppercase font-mono italic break-words">
+                {isWap ? (
+                  "U.M.S-M."
+                ) : (
+                  <>CITY<br />OF SAINT-MICHAEL</>
+                )}
+              </h1>
+              <div className="text-xs mt-2 font-mono italic">
+                SINCE 1644
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/*menu*/}
+        <div className="bg-gray-300 p-1">
+          <ul className="flex flex-col space-y-1 text-xs font-bold">
+            
+            {/*homepage*/}
+            <li>
+              <Link href="/" className="block px-2 py-1 bg-gray-300 border border-t-white border-l-white border-b-gray-800 
+              border-r-gray-800 hover:bg-black hover:text-white transition-all font-mono italic uppercase whitespace-nowrap overflow-hidden text-ellipsis"
+                style={{ 
+                  boxShadow: 'inset -1px -1px #0f0f0f, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff' 
+                }}>
+                HOMEPAGE
+              </Link>
+            </li>
+
+            {/*about city*/}
+            <li>
+              <button
+                onClick={() => toggleMenu("about")}
+                className="flex items-center justify-between w-full px-2 py-1 bg-gray-300 border border-t-white border-l-white
+                 border-b-gray-800 border-r-gray-800 hover:bg-black hover:text-white transition-all font-mono italic uppercase whitespace-nowrap"
+                style={{ 
+                  boxShadow: 'inset -1px -1px #0f0f0f, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff' 
+                }}
+              >
+                <span className="overflow-hidden text-ellipsis">ABOUT MUNICIPALITY</span>
+                <span>{openMenu === "about" ? '▼' : '▶'}</span>
+              </button>
+              {openMenu === "about" && (
+                <ul className="ml-4 mt-1 space-y-1 bg-gray-300 border border-t-white border-l-white border-b-gray-800 border-r-gray-800 p-1">
+                  <li><a href="/about/history" className="block px-2 py-1 text-xs bg-gray-300 border border-t-white
+                   border-l-white border-b-gray-800 border-r-gray-800 hover:bg-black hover:text-white font-mono italic uppercase whitespace-nowrap overflow-hidden text-ellipsis"
+                   style={{ 
+                    boxShadow: 'inset -1px -1px #0f0f0f, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff' 
+                  }}>HISTORY</a></li>
+                  <li><a href="/about/geography" className="block px-2 py-1 text-xs bg-gray-300 border border-t-white
+                   border-l-white border-b-gray-800 border-r-gray-800 hover:bg-black hover:text-white font-mono italic uppercase whitespace-nowrap overflow-hidden text-ellipsis"
+                   style={{ 
+                    boxShadow: 'inset -1px -1px #0f0f0f, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff' 
+                  }}>GEOGRAPHY</a></li>
+                </ul>
+              )}
+            </li>
+
+            {/*city government*/}
+            <li>
+              <button
+                onClick={() => toggleMenu("council")}
+                className="flex items-center justify-between w-full px-2 py-1 bg-gray-300 border border-t-white border-l-white 
+                border-b-gray-800 border-r-gray-800 hover:bg-black hover:text-white transition-all font-mono italic uppercase whitespace-nowrap"
+                style={{ 
+                  boxShadow: 'inset -1px -1px #0f0f0f, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff' 
+                }}
+              >
+                <span className="overflow-hidden text-ellipsis">{isWap ? "GOVERNMENT" : "GOVERNMENT"}</span>
+                <span>{openMenu === "council" ? '▼' : '▶'}</span>
+              </button>
+              {openMenu === "council" && (
+                <ul className="ml-4 mt-1 space-y-1 bg-gray-300 border border-t-white border-l-white border-b-gray-800 border-r-gray-800 p-1">
+                  <li><a href="/government/administration" className="block px-2 py-1 text-xs bg-gray-300 border border-t-white
+                   border-l-white border-b-gray-800 border-r-gray-800 hover:bg-black hover:text-white font-mono italic uppercase whitespace-nowrap overflow-hidden text-ellipsis"
+                   style={{ 
+                    boxShadow: 'inset -1px -1px #0f0f0f, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff' 
+                  }}>ADMINISTRATION</a></li>
+                  <li><a href="/government/council" className="block px-2 py-1 text-xs bg-gray-300 border border-t-white
+                   border-l-white border-b-gray-800 border-r-gray-800 hover:bg-black hover:text-white font-mono italic uppercase whitespace-nowrap overflow-hidden text-ellipsis"
+                   style={{ 
+                    boxShadow: 'inset -1px -1px #0f0f0f, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff' 
+                  }}>{isWap ? "COUNCIL" : "COUNCIL"}</a></li>
+                </ul>
+              )}
+            </li>
+
+            
+
+            {/*emergency services*/}
+            <li>
+              <button
+                onClick={() => toggleMenu("emergency")}
+                className="flex items-center justify-between w-full px-2 py-1 bg-red-800 text-white border border-t-white border-l-white
+                 border-b-gray-800 border-r-gray-800 hover:bg-red-900 transition-all font-mono italic uppercase whitespace-nowrap"
+                style={{ 
+                  boxShadow: 'inset -1px -1px #0f0f0f, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff' 
+                }}
+              >
+                <span className="overflow-hidden text-ellipsis">EMERGENCY</span>
+                <span>{openMenu === "emergency" ? '▼' : '▶'}</span>
+              </button>
+              {openMenu === "emergency" && (
+                <ul className="ml-4 mt-1 space-y-1 bg-red-200 border border-t-white border-l-white border-b-gray-800 border-r-gray-800 p-1">
+                  <li><a href="/emergency/police" className="block px-2 py-1 text-xs bg-red-800 text-white border border-t-white border-l-white
+                   border-b-gray-800 border-r-gray-800 hover:bg-blue-900 hover:text-white font-mono italic uppercase whitespace-nowrap overflow-hidden text-ellipsis"
+                   style={{ 
+                    boxShadow: 'inset -1px -1px #0f0f0f, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff' 
+                  }}>POLICE</a></li>
+                  <li><a href="/emergency/defense" className="block px-2 py-1 text-xs bg-red-800 text-white border border-t-white border-l-white
+                   border-b-gray-800 border-r-gray-800 hover:bg-blue-900 hover:text-white font-mono italic uppercase whitespace-nowrap overflow-hidden text-ellipsis"
+                   style={{ 
+                    boxShadow: 'inset -1px -1px #0f0f0f, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff' 
+                  }}>DEFENSE</a></li>
+                  <li><a href="/emergency/medical" className="block px-2 py-1 text-xs bg-red-800 text-white border border-t-white border-l-white
+                   border-b-gray-800 border-r-gray-800 hover:bg-blue-900 hover:text-white font-mono italic uppercase whitespace-nowrap overflow-hidden text-ellipsis"
+                   style={{ 
+                    boxShadow: 'inset -1px -1px #0f0f0f, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff' 
+                  }}>MEDICAL</a></li>
+                </ul>
+              )}
+            </li>
+
+            {/*contacts*/}
+            <li>
+              <button
+                onClick={() => toggleMenu("contacts")}
+                className="flex items-center justify-between w-full px-2 py-1 bg-gray-300 border border-t-white border-l-white 
+                border-b-gray-800 border-r-gray-800 hover:bg-black hover:text-white transition-all font-mono italic uppercase whitespace-nowrap"
+                style={{ 
+                  boxShadow: 'inset -1px -1px #0f0f0f, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff' 
+                }}
+              >
+                <span className="overflow-hidden text-ellipsis">CONTACTS</span>
+                <span>{openMenu === "contacts" ? '▼' : '▶'}</span>
+              </button>
+              {openMenu === "contacts" && (
+                <ul className="ml-4 mt-1 space-y-1 bg-gray-300 border border-t-white border-l-white border-b-gray-800 border-r-gray-800 p-1">
+                  <li><a href="/contacts/reception" className="block px-2 py-1 text-xs bg-gray-300 border
+                   border-t-white border-l-white border-b-gray-800 border-r-gray-800 hover:bg-black hover:text-white font-mono italic uppercase whitespace-nowrap overflow-hidden text-ellipsis"
+                   style={{ 
+                    boxShadow: 'inset -1px -1px #0f0f0f, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff' 
+                  }}>RECEPTION</a></li>
+                </ul>
+              )}
+            </li>
+          </ul>
+
+          {/*footer*/}
+          <div className="p-2 border-t-2 border-t-gray-800 border-l-2 border-l-white bg-gray-300 text-xs text-center mt-2 border-r-2 border-r-gray-800 border-b-2 border-b-white">
+            <div className="text-red-800 font-bold mb-2 font-mono italic uppercase break-words">
+              STATE OF EMERGENCY: 7778 DAYS UNDER MARTIAL LAW PROVISIONS.
+            </div>
+            <div className="text-gray-800 font-mono italic uppercase break-words">
+              © 1991-1998. City of Santa-Michael, Enkelinlinna United Municipality, Aurinfjall Republic
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div className="flex-grow p-4 sm:ml-0 mt-12 sm:mt-0">
+        <div className="bg-white border-2 border-t-white border-l-white border-b-gray-800 border-r-gray-800 p-4">
+            {/*city administration*/}
+            <div className="bg-[#c0c0c0] border-2 border-t-white border-l-white border-b-gray-800 border-r-gray-800 p-3">
+              <h2 className="text-lg font-bold text-[#000080] font-mono mb-2 border-b border-gray-600 pb-1">
+               C I T Y   A D M I N I S T R A T I O N
+              </h2>
+              <div className="space-y-2">
+               <div className="w-full bg-white border text-black border-gray-400 p-2">
+                 <div id="32952" data-tip="true" data-for="32952" className="card-role-information_list-item card color_white__bg card--transition card--border card-role-information">
+                   <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4">
+                  {/*photo*/}
+                  <div className="flex-shrink-0 w-full sm:w-auto text-center sm:text-left">
+                   <Image 
+                    src="/jakobsdottir.png"
+                    alt="Jakobsdottir"
+                    width={240}
+                    height={320}
+                    className="card-role-information_employee-info__image mx-auto sm:mx-0 object-cover rounded-lg"
+                    sizes="(max-width: 640px) 100vw, 120px"
+                    priority={false}
+                    loading="lazy"
+                    />
+                  </div>
+        
+                   {/*jakobsdottir container*/}
+                   <div className="flex flex-col justify-start text-center sm:text-left w-full">
+                      <p className="text-sm sm:text-base uppercase font-mono font-bold italic text-left">
+                         Katrin Eleanor Jakobsdottir
+                       </p>
+                       <p className="text-xs sm:text-sm text-uppercase font-mono italic text-left">
+                         Mayor of Saint-Michael
+                       </p>
+                        <p className="text-xs sm:text-sm uppercase font-mono text-red-800 text-left mb-3">
+                          Since April 7th, 1992
+                        </p>
+                        <p className="text-xs sm:text-sm font-mono font-bold italic text-left">
+                            
+                        </p>
+                        <p className="text-xs sm:text-sm font-mono italic text-left">
+                          The Mayor of Saint-Michael is the head of the city administration and is responsible for the overall management and operation of the city&#39;s services and departments. 
+                          The mayor works closely with the city council to develop policies and initiatives that promote the well-being and prosperity of the city community.
+                        </p>
+                        <p className="text-xs sm:text-sm text-red-800 font-mono italic text-left mt-3">e-mail: jakobsdottir@santamikael.gov</p>
+                        <p className="text-xs sm:text-sm text-red-800 font-mono italic text-left">phone: +3 (717) 552-8296</p>
+                     </div>
+                   </div>
+                 </div>
+                 <div id="32952" data-tip="true" data-for="32952" className="card-role-information_list-item card color_white__bg card--transition card--border card-role-information mt-5">
+                   <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4">
+                  {/*photo*/}
+                  <div className="flex-shrink-0 w-full sm:w-auto text-center sm:text-left">
+                   <Image 
+                    src="/lieutenant.png"
+                    alt="mccormick"
+                    width={240}
+                    height={320}
+                    className="card-role-information_employee-info__image mx-auto sm:mx-0 object-cover rounded-lg"
+                    sizes="(max-width: 640px) 100vw, 120px"
+                    priority={false}
+                    loading="lazy"
+                    />
+                  </div>
+        
+                   {/*lieutenant container*/}
+                   <div className="flex flex-col justify-start text-center sm:text-left w-full">
+                      <p className="text-sm sm:text-base uppercase font-mono font-bold italic text-left">
+                         Harold Steven McCormick
+                       </p>
+                       <p className="text-xs sm:text-sm text-uppercase font-mono italic text-left">
+                         Lieutenant Mayor of Santa Michael, Secretary of the City Council
+                       </p>
+                        <p className="text-xs sm:text-sm uppercase font-mono text-red-800 text-left mb-3">
+                          Since October 1st, 1996
+                        </p>
+                        <p className="text-xs sm:text-sm font-mono font-bold italic text-left">
+                            
+                        </p>
+                        <p className="text-xs sm:text-sm font-mono italic text-left">
+                          The Lieutenant Mayor of Santa Michael was a secretary of the city council. 
+                        </p>
+                        <p className="text-xs sm:text-sm text-red-800 font-mono italic text-left mt-3">e-mail: mccormick@santamikael.gov</p>
+                        <p className="text-xs sm:text-sm text-red-800 font-mono italic text-left">phone: +3 (717) 552-9079</p>
+                     </div>
+                   </div>
+                 </div>
+                 <div id="32952" data-tip="true" data-for="32952" className="card-role-information_list-item card color_white__bg card--transition card--border card-role-information mt-8">
+                   <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4">
+                  {/*photo*/}
+                  <div className="flex-shrink-0 w-full sm:w-auto text-center sm:text-left">
+                   <Image 
+                    src="/executive.png"
+                    alt="africa"
+                    width={240}
+                    height={320}
+                    className="card-role-information_employee-info__image mx-auto sm:mx-0 object-cover rounded-lg"
+                    sizes="(max-width: 640px) 100vw, 120px"
+                    priority={false}
+                    loading="lazy"
+                    />
+                  </div>
+        
+                   {/*executive container*/}
+                   <div className="flex flex-col justify-start text-center sm:text-left w-full">
+                      <p className="text-sm sm:text-base uppercase font-mono font-bold italic text-left">
+                         Francis Phillip Thompson
+                       </p>
+                       <p className="text-xs sm:text-sm text-uppercase font-mono italic text-left">
+                         Secretary of the Mayor Executive Office
+                       </p>
+                        <p className="text-xs sm:text-sm uppercase font-mono text-red-800 text-left mb-3">
+                          Since January 27th, 1993
+                        </p>
+                        <p className="text-xs sm:text-sm font-mono font-bold italic text-left">
+                            
+                        </p>
+                        <p className="text-xs sm:text-sm font-mono italic text-left">
+                          The Secretary of the Mayor Executive Office assists the Mayor in managing executive functions, coordinates administrative tasks, and ensures effective communication between the Mayor&#39;s office 
+                          and other city departments. This role supports the implementation of municipal policies and oversees the execution of executive decisions to maintain efficient city operations.
+                        </p>
+                        <p className="text-xs sm:text-sm text-red-800 font-mono italic text-left mt-3">e-mail: thompson@santamikael.gov</p>
+                        <p className="text-xs sm:text-sm text-red-800 font-mono italic text-left">phone: +3 (717) 552-1088</p>
+                     </div>
+                   </div>
+                 </div>  
+               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
